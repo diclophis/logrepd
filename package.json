@@ -1,0 +1,11 @@
+{
+  "name": "logrepd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "sequelize": "~> 3.30",
+    "pg": "~> 6.1"
+  }
+}
