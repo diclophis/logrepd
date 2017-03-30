@@ -22,6 +22,7 @@
     "react": "~> 0.13",
 
     "baobab": "~> 2.4",
-    "baobab-react": "~> 2.1"
+    "baobab-react": "~> 2.1",
+    "bluebird": "~> 3"
   }
 }

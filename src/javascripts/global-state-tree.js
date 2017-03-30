@@ -1,9 +1,15 @@
 //
 
-var baobab = require('baobab');
+var baobabClass = require('baobab');
 
-module.exports = new baobab({
-  global: {
-    logCount: 0
-  }
+module.exports = (function() {
+  return new baobabClass({
+    global: {
+      logCount: 0
+    }
+  }, {
+    autoCommit: false,
+    asynchronous: true,
+    lazyMonkeys: false
+  });
 });

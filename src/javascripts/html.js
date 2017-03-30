@@ -2,12 +2,21 @@
 
 var React = require('react');
 var MainComponent = require('./main');
-var globalStateTree = require('./global-state-tree');
 
+var treeMixins = require('baobab-react/mixins');
+
+
+//var globalStateTree = require('./global-state-tree');
 
 var HtmlComponent = React.createClass({
+  mixins: [treeMixins.root],
+
   render: function() {
     var mainContainerId = this.props.packageModule.toLowerCase() + "-container";
+
+    var entryPoint = function(bootstrap, mainContainer) {
+      bootstrap(mainContainer);
+    };
 
     var bootstrapFunction = '(' + entryPoint.toString() + ')';
     var bootstrapInvokation = '(' + this.props.packageModule + ', document.getElementById("' + mainContainerId + '"));';
@@ -22,7 +31,7 @@ var HtmlComponent = React.createClass({
         </head>
         <body>
           <div id={mainContainerId}>
-            <MainComponent tree={globalStateTree} />
+            <MainComponent />
           </div>
           <script type="text/javascript" dangerouslySetInnerHTML={{__html:'__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};'}}></script>
           <script type="text/javascript" src={this.props.js}></script>

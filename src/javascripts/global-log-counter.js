@@ -13,6 +13,7 @@ var GlobalLogCounterComponent = React.createClass({
   render: function() {
     return (
       <div>
+        <h1>total logs</h1>
         {this.state.logCount}
       </div>
     );
