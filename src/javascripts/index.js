@@ -1,8 +1,5 @@
 // Isomorphic Single Page Javascript Application
 
-var React = require('react');
-var HtmlComponent = require('./html');
-
 
 entryPoint = function(bootstrap, mainContainer) {
   console.log("js begins here");
@@ -12,5 +9,11 @@ entryPoint = function(bootstrap, mainContainer) {
 
 module.exports = {};
 module.exports.render = function(packageModule, js) {
-  return '<!DOCTYPE html>' + React.renderToStaticMarkup(<HtmlComponent packageModule={packageModule} js={js} />);
+  var React = require('react');
+  var htmlComponent = require('./html');
+
+  return '<!DOCTYPE html>' + React.renderToStaticMarkup(React.createElement(htmlComponent, {
+    packageModule: packageModule,
+    js: js
+  }));
 };
