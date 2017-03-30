@@ -6,6 +6,15 @@
   "private": true,
   "dependencies": {
     "sequelize": "~> 3.30",
-    "pg": "~> 6.1"
+    "pg": "~> 6.1",
+    "express": "~> 4.15",
+    "webpack": "~> 2.3",
+    "webpack-dev-middleware": "~> 1.10",
+    "react": "~> 0.13",
+    "node-jsx": "~> 0.13",
+    "babel-loader": "~> 6.4",
+    "babel-core": "~> 6.24",
+    "babel-preset-es2015": "~> 6.16.0",
+    "babel-preset-react": "~> 6.16.0"
   }
 }
