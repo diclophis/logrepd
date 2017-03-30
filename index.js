@@ -88,7 +88,7 @@ var webpackConfig = webpack({
   },
 
 	entry: [
-    './src/javascripts/app.js'
+    './src/javascripts/bootstrap.js'
   ],
 
   output: {
