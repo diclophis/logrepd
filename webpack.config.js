@@ -11,7 +11,7 @@ module.exports = {
     ]
   },
 
-	entry: [
+  entry: [
     './src/javascripts/bootstrap.js'
   ],
 
