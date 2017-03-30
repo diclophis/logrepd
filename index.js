@@ -11,32 +11,23 @@ var express = require('express');
 
 var globalStateTree = require('./src/javascripts/global-state-tree')();
 var globalCursor = globalStateTree.select('global');
-//globalCursor.set('logCount', -1);
-//globalStateTree.commit();
 
 var nodeJsx = require('node-jsx');
 var webpack = require('webpack');
 var webpackMiddleware = require("webpack-dev-middleware");
 var webpackDotConfig = require('./webpack.config');
-
-// non-blocking ENV setup
 var databaseName = process.env["PG_DATABASE"] || 'fluentd';
 var tableName = process.env["FLUENTD_TABLE"] || 'fluentd';
-
 var httpPort = process.env.PORT || 3001;
 var postgresUrl = 'postgres://' + process.env["PG_USERNAME"] + '@' + process.env["PG_HOST"] + '/' + databaseName;
 
-// debug data
-//console.log(postgresUrl);
-
-// blocking init functions
-var jsxInstalled = nodeJsx.install();
-var sequelizeConnection = new sequelize(postgresUrl);
+// TODO: refactor when all handlers are exports
 var app = express();
 
-var index = require('./src/javascripts/index');
 
+// this is all of the model layer
 // NOTE: https://github.com/sequelize/sequelize/blob/master/docs/docs/models-definition.md
+var sequelizeConnection = new sequelize(postgresUrl);
 var fluentd = sequelizeConnection.define(tableName, {
   record: {
     type: sequelize.JSONB,
@@ -54,7 +45,6 @@ var fluentd = sequelizeConnection.define(tableName, {
   timestamps: false,
   tableName: tableName
 });
-
 // NOTE: http://docs.sequelizejs.com/en/v3/docs/legacy/
 fluentd.sync().then(function() {
   fluentd.removeAttribute('id');
@@ -70,13 +60,23 @@ fluentd.sync().then(function() {
     //});
 
     fluentd.count().then(function(c) {
-      console.log(c);
       globalCursor.set('logCount', c);
-      //globalStateTree.commit();
     });
   }, 500);
 });
+// fetches the given cursor location from the global state tree
+// TODO: dispatch event to update tree??
+app.get('/hydrate/*', function(req, res) {
+  var cursorArgs = req.url.replace(/^\//g, '').split("/")
+  cursorArgs.shift();
 
+  var json = globalStateTree.serialize(cursorArgs);
+
+  res.send(JSON.stringify(json));
+});
+
+
+// asset compilation occurs here
 var webpackAssetCompilation = webpackMiddleware(webpack(webpackDotConfig), {
   // display no info to console (only warnings and errors) 
   noInfo: false,
@@ -87,26 +87,13 @@ var webpackAssetCompilation = webpackMiddleware(webpack(webpackDotConfig), {
   // publicPath is required, whereas all other options are optional 
   publicPath: webpackDotConfig.output.publicPath,
 });
-
 app.use(webpackAssetCompilation);
 
-app.get('/hydrate/*', function(req, res) {
-  //console.log(req, globalStateTree);
-  var cursorArgs = req.url.replace(/^\//g, '').split("/")
-  cursorArgs.shift();
 
-  //var cursor = globalStateTree.select.apply(globalStateTree, cursorArgs);
-  //cursor.get();
-  console.log(cursorArgs);
-
-  var json = globalStateTree.serialize(cursorArgs);
-
-  console.log(json);
-
-	res.send(JSON.stringify(json));
-});
-
-app.get('*', function(req, res) {
+// react server side rendering occurs here
+var jsxInstalled = nodeJsx.install();
+var index = require('./src/javascripts/index');
+app.get('', function(req, res) {
   var indexHtml = index.renderHtml(webpackDotConfig, globalStateTree);
 	res.send(indexHtml);
 });

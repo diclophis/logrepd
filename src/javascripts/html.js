@@ -2,11 +2,8 @@
 
 var React = require('react');
 var MainComponent = require('./main');
-
 var treeMixins = require('baobab-react/mixins');
 
-
-//var globalStateTree = require('./global-state-tree');
 
 var HtmlComponent = React.createClass({
   mixins: [treeMixins.root],
