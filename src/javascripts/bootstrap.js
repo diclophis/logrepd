@@ -2,20 +2,29 @@
 
 var React = require('react');
 var MainComponent = require('./main');
-var globalStateTree = require('./global-state-tree')();
 var hydrate = require('./hydrate');
+var globalStateTree = require('./global-state-tree')(); // 1/2 locations, for client-side
+var globalCursor = globalStateTree.select('global');
 
+
+var logCountUpdater = function(valToSet) {
+  globalCursor.set('logCount', valToSet);
+  globalStateTree.commit();
+};
+
+var keepUpdatingCount = function() {
+  hydrate.get("global/logCount").then(function(valAtInterval) {
+    logCountUpdater(valAtInterval);
+    setTimeout(keepUpdatingCount, 1000);
+  });
+};
 
 module.exports = function(mainContainer) {
-  console.log("OR HERE");
+  console.log("all browser js starts here");
 
-  hydrate.get("global/logCount").then(function(val) {
-    //console.log("hydrate!", val);
-    //globalStateTree
-
-    var globalCursor = globalStateTree.select('global');
-    globalCursor.set('logCount', val);
-    globalStateTree.commit();
+  hydrate.get("global/logCount").then(function(initialVal) {
+    logCountUpdater(initialVal);
+    keepUpdatingCount();
 
     React.render(<MainComponent tree={globalStateTree} />, mainContainer);
   });

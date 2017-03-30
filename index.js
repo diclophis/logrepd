@@ -1,14 +1,12 @@
 // logrepd
 
-var path = require("path");
 var process = require("process");
 var express = require('express');
 
 var backend = require('./src/javascripts/backend');
 var hydrate = require('./src/javascripts/hydrate');
-var globalStateTree = require('./src/javascripts/global-state-tree')();
+var globalStateTree = require('./src/javascripts/global-state-tree')(); // 1/2 locations, for server-side
 
-var nodeJsx = require('node-jsx');
 var webpack = require('webpack');
 var webpackMiddleware = require("webpack-dev-middleware");
 var webpackDotConfig = require('./webpack.config');
@@ -31,26 +29,17 @@ var webpackAssetCompilation = webpackMiddleware(webpack(webpackDotConfig), {
   // recompile every request
   lazy: true,
   // publicPath is required, whereas all other options are optional 
-  publicPath: webpackDotConfig.output.publicPath,
+  publicPath: webpackDotConfig.output.publicPath, // TODO: figure this out
 });
 
 // TODO: refactor when all handlers are exports
 var app = express();
-
 // fetches the given cursor location from the global state tree
 // TODO: dispatch event to update tree??
 // TODO: figure out express.use
-app.get('/hydrate/*', hydrate.createService(globalStateTree));
-
 app.use(webpackAssetCompilation);
-
-// react server side rendering occurs here
-var jsxInstalled = nodeJsx.install();
-var index = require('./src/javascripts/index');
-app.get('', function(req, res) {
-  var indexHtml = index.renderHtml(webpackDotConfig, globalStateTree);
-	res.send(indexHtml);
-});
+app.get('/hydrate/*', hydrate.createService(globalStateTree));
+app.get('', backend.createStaticIndexServer(webpackDotConfig, globalStateTree));
 
 var expressServer = app.listen(httpPort, function() {
   console.log('Listening for web on httpPort', httpPort);

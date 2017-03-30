@@ -2,11 +2,9 @@
 
 var React = require('react');
 var HtmlComponent = require('./html');
+var bluebird = require('bluebird');
 
-
-// console.log("browser js begins here technically, but not all requires are avail.");
-console.log("aasdasd");
-
+/*
 function clone(objectToBeCloned) {
   // Basis.
   if (!(objectToBeCloned instanceof Object)) {
@@ -36,16 +34,23 @@ function clone(objectToBeCloned) {
   
   return objectClone;
 }
+*/
 
+var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
+  var webpackDotConfig = webpackDotConfigAndTree.webpackDotConfig;
+  var globalStateTree = webpackDotConfigAndTree.globalStateTree;
 
-module.exports = {};
-module.exports.renderHtml = function(webpackDotConfig, globalStateTree) {
   var packageModule = webpackDotConfig.output.library;
   var js = (webpackDotConfig.output.publicPath + '/' + webpackDotConfig.output.filename);
 
-  return '<!DOCTYPE html>' + React.renderToStaticMarkup(React.createElement(HtmlComponent, {
+  callWithErrorAndValue(null, '<!DOCTYPE html>' + React.renderToStaticMarkup(React.createElement(HtmlComponent, {
     tree: globalStateTree,
     packageModule: packageModule,
     js: js
-  }));
+  })));
 };
+
+
+
+module.exports = {};
+module.exports.renderHtml = bluebird.promisify(libraryFunction);

@@ -3,6 +3,19 @@
 var sequelize = require("sequelize");
 var timers = require("timers");
 
+var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
+  // react server side rendering occurs here
+  var nodeJsx = require('node-jsx');
+  var jsxInstalled = nodeJsx.install();
+  var index = require('./index');
+
+  return (function(req, res) {
+    index.renderHtml({webpackDotConfig: webpackDotConfig, globalStateTree: globalStateTree}).then(function(indexHtml) {
+      res.send(indexHtml);
+    });
+  });
+};
+
 
 var createConnection = function(postgresUrl, tableName, globalStateTree) {
   var globalCursor = globalStateTree.select('global');
@@ -49,4 +62,5 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
 };
 
 module.exports = {}
+module.exports.createStaticIndexServer = createStaticIndexServer;
 module.exports.createConnection = createConnection
