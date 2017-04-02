@@ -1,8 +1,9 @@
 // Isomorphic Single Page Javascript Application
 
 var React = require('react');
-var HtmlComponent = require('./html');
 var bluebird = require('bluebird');
+var HtmlComponent = require('./html');
+
 
 /*
 function clone(objectToBeCloned) {
@@ -49,7 +50,6 @@ var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
     js: js
   })));
 };
-
 
 
 module.exports = {};

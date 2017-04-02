@@ -2,11 +2,12 @@
 
 var sequelize = require("sequelize");
 var timers = require("timers");
+var nodeJsx = require('node-jsx');
+
 
 var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
   // react server side rendering occurs here
-  var nodeJsx = require('node-jsx');
-  var jsxInstalled = nodeJsx.install();
+  var jsxInstalled = nodeJsx.install(); // reconsider JSX...
   var index = require('./index');
 
   return (function(req, res) {
