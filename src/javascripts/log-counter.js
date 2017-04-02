@@ -16,25 +16,42 @@ var GlobalLogCounterComponent = React.createClass({
 			width: "100%",
 			height: "100%",
 			left: 0,
-      top: 0
+      top: 0,
+      transform: "scale(0.5)",
+      overflow: "visible"
 		};
 
 		var timeWidth = (this.props.endTime - this.props.beginTime); //this.state.logCount;
     
     var timeGrid = 1000;
-    var lineWidthMod = 1 / 10;
+    var lineWidthMod = 2 / 10;
 
 		var gridLines = [];
     var gridTimestamps = [];
+    var textMod = 10;
 
-//debugger;
-console.log(timeWidth);
+    var halfAUnitOfMod = (0.5/(timeWidth / timeGrid / textMod)) * 0.0;
+    var unitOfGrid = (1 / timeWidth);
 
     var ii = 0;
 		for (var i=0; i<timeWidth; i+=timeGrid) {
-
-      var xOff = ((((i + (0.5 * timeGrid)) / timeWidth)) * 100);
+      var xOff = (((i * unitOfGrid) + halfAUnitOfMod) * 100);
       var width = lineWidthMod;
+
+      var t = ""; //ii.toString();
+      var shouldShowGridLine = false;
+      var shouldShowGridText = false;
+
+      if (((ii + (textMod/2)) % textMod) == 0) {
+        var dateOfTimestamp = new Date(this.props.beginTime + i);
+
+        t = dateOfTimestamp.toLocaleTimeString();
+        shouldShowGridLine = true;
+        shouldShowGridText = true;
+      } else {
+        shouldShowGridLine = true;
+        width = 0.333 * lineWidthMod;
+      }
 
       var xOffp = (xOff - (0.5 * width)) + "%";
       var widthp = width + "%";
@@ -44,28 +61,25 @@ console.log(timeWidth);
 
 			var fontSizep = 1 + "em";
 
-      var t = ""; //ii.toString();
-      var shouldShowGridLine = false;
 
-      if ((ii % 10) == 0) {
-        var dateOfTimestamp = new Date(i);
-
-        t = dateOfTimestamp.toLocaleTimeString();
-        shouldShowGridLine = true;
-      } 
+      var fontId = "font-" + xOffFontp;
+      var gridId = "grid-" + xOffp;
 
 			var gridTimestamp = (
-				<text x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
+				<text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
 					{t}
 				</text>
 			);
 
 			var gridLine = (
-				<rect x={xOffp} y={0} width={widthp} height="100%" fill="blue" />
+				<rect key={gridId} x={xOffp} y={0} width={widthp} height="100%" fill="blue" />
 			);
 
       if (shouldShowGridLine) {
         gridLines.push(gridLine);
+      }
+
+      if (shouldShowGridText) {
         gridTimestamps.push(gridTimestamp);
       }
 
