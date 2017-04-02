@@ -32,7 +32,7 @@ var HtmlComponent = React.createClass({
           </div>
           <script type="text/javascript" dangerouslySetInnerHTML={{__html:'__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};'}}></script>
         </body>
-        <script type="text/javascript" src={this.props.js}></script>
+        <script type="text/javascript" xsrc={this.props.js}></script>
         <script type="text/javascript" dangerouslySetInnerHTML={{__html:bootstrapSource}}></script>
       </html>
     );

@@ -19,15 +19,21 @@ var GlobalLogCounterComponent = React.createClass({
       top: 0
 		};
 
-		var timeWidth = this.state.logCount;
-    var timeGrid = 1;
+		var timeWidth = (this.props.endTime - this.props.beginTime); //this.state.logCount;
+    
+    var timeGrid = 1000;
     var lineWidthMod = 1 / 10;
 
 		var gridLines = [];
     var gridTimestamps = [];
 
-		for (var i=0; i<timeWidth; i++) {
-      var xOff = (((timeGrid / timeWidth) * (i + 0.5)) * 100);
+//debugger;
+console.log(timeWidth);
+
+    var ii = 0;
+		for (var i=0; i<timeWidth; i+=timeGrid) {
+
+      var xOff = ((((i + (0.5 * timeGrid)) / timeWidth)) * 100);
       var width = lineWidthMod;
 
       var xOffp = (xOff - (0.5 * width)) + "%";
@@ -38,9 +44,19 @@ var GlobalLogCounterComponent = React.createClass({
 
 			var fontSizep = 1 + "em";
 
+      var t = ""; //ii.toString();
+      var shouldShowGridLine = false;
+
+      if ((ii % 10) == 0) {
+        var dateOfTimestamp = new Date(i);
+
+        t = dateOfTimestamp.toLocaleTimeString();
+        shouldShowGridLine = true;
+      } 
+
 			var gridTimestamp = (
-				<text x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep}>
-					{i}
+				<text x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
+					{t}
 				</text>
 			);
 
@@ -48,8 +64,12 @@ var GlobalLogCounterComponent = React.createClass({
 				<rect x={xOffp} y={0} width={widthp} height="100%" fill="blue" />
 			);
 
-      gridLines.push(gridLine);
-      gridTimestamps.push(gridTimestamp);
+      if (shouldShowGridLine) {
+        gridLines.push(gridLine);
+        gridTimestamps.push(gridTimestamp);
+      }
+
+      ii += 1;
 		}
 
     return (
@@ -58,6 +78,12 @@ var GlobalLogCounterComponent = React.createClass({
 					{this.state.logCount}
 				</h1>
 				<svg style={graphStyle}>
+					<defs>
+						<filter x="0" y="0" width="1" height="1" id="solid">
+							<feFlood floodColor="white"/>
+							<feComposite in="SourceGraphic"/>
+						</filter>
+					</defs> 
 					<circle cx="50%" cy="50%" r={20} fill="red" />
 					{gridLines}
 					{gridTimestamps}

@@ -21,9 +21,12 @@ var MainComponent = React.createClass({
 */
 
   render: function() {
+    var endTime = Date.now();
+    var beginTime = endTime - (60 * 1000);
+
     return (
       <div>
-        <LogCounter />
+        <LogCounter beginTime={beginTime} endTime={endTime} />
       </div>
     );
   }

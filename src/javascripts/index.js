@@ -1,6 +1,8 @@
 // Isomorphic Single Page Javascript Application
 
 var React = require('react');
+var ReactDOMServer = require('react-dom/server');
+
 var bluebird = require('bluebird');
 var HtmlComponent = require('./html');
 
@@ -44,7 +46,7 @@ var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
   var packageModule = webpackDotConfig.output.library;
   var js = (webpackDotConfig.output.publicPath + '/' + webpackDotConfig.output.filename);
 
-  callWithErrorAndValue(null, '<!DOCTYPE html>' + React.renderToStaticMarkup(React.createElement(HtmlComponent, {
+  callWithErrorAndValue(null, '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(HtmlComponent, {
     tree: globalStateTree,
     packageModule: packageModule,
     js: js
