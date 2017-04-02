@@ -2,6 +2,9 @@
   "name": "logrepd",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "bootstrap": "sh bootstrap.sh"
+  },
   "license": "MIT",
   "private": true,
   "dependencies": {
