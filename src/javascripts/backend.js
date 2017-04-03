@@ -59,6 +59,7 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
         globalCursor.set('logCount', c);
       });
     }, 500);
+
   });
 };
 

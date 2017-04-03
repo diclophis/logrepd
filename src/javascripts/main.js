@@ -7,7 +7,8 @@ var LogCounter = require('./log-counter');
 
 var MainComponent = React.createClass({
   // Let's bind the component to the tree through the `root` mixin, unless they are in nodejs process, see bootstrap
-  mixins: [(typeof(document) === "undefined") ? treeMixins.branch : treeMixins.root],
+  //mixins: [(typeof(document) === "undefined") ? treeMixins.branch : treeMixins.root],
+  mixins: [treeMixins.root],
 
 /*
   getInitialState: function() {
@@ -20,13 +21,12 @@ var MainComponent = React.createClass({
   },
 */
 
+
   render: function() {
-    var endTime = Date.now();
-    var beginTime = endTime - (60 * 1000);
 
     return (
       <div>
-        <LogCounter beginTime={beginTime} endTime={endTime} />
+        <LogCounter />
       </div>
     );
   }

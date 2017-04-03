@@ -6,22 +6,38 @@ var treeMixins = require('baobab-react/mixins');
 
 var GlobalLogCounterComponent = React.createClass({
   mixins: [treeMixins.branch],
+
   cursors: {
-    logCount: ['global', 'logCount']
+    logCount: ['global', 'logCount'],
+    endTime: ['global', 'endTime']
   },
 
   render: function() {
+    var followingGlobalEndTime = true;
+
+    var endTime = 0;
+    var beginTime = 0;
+
+//console.log(this.state);
+//debugger;
+
+    if (followingGlobalEndTime && this.state && this.state.endTime) {
+      endTime = this.state.endTime;
+      beginTime = endTime - (60 * 1000);
+    } else {
+    }
+
 		var graphStyle = {
 			position: "absolute",
 			width: "100%",
 			height: "100%",
 			left: 0,
       top: 0,
-      transform: "scale(0.5)",
+      transform: "scale(1.0)",
       overflow: "visible"
 		};
 
-		var timeWidth = (this.props.endTime - this.props.beginTime); //this.state.logCount;
+		var timeWidth = (endTime - beginTime); //this.state.logCount;
     
     var timeGrid = 1000;
     var lineWidthMod = 2 / 10;
@@ -43,7 +59,7 @@ var GlobalLogCounterComponent = React.createClass({
       var shouldShowGridText = false;
 
       if (((ii + (textMod/2)) % textMod) == 0) {
-        var dateOfTimestamp = new Date(this.props.beginTime + i);
+        var dateOfTimestamp = new Date(beginTime + i);
 
         t = dateOfTimestamp.toLocaleTimeString();
         shouldShowGridLine = true;

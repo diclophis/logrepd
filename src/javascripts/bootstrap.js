@@ -1,6 +1,7 @@
 //
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var MainComponent = require('./main');
 var hydrate = require('./hydrate');
 var globalStateTree = require('./global-state-tree')(); // 1/2 locations, for client-side
@@ -9,6 +10,7 @@ var globalCursor = globalStateTree.select('global');
 
 var logCountUpdater = function(valToSet) {
   globalCursor.set('logCount', valToSet);
+  globalCursor.set('endTime', Date.now());
   globalStateTree.commit();
 };
 
@@ -26,7 +28,7 @@ module.exports = function(mainContainer) {
     logCountUpdater(initialVal);
     keepUpdatingCount();
 
-    React.render(<MainComponent tree={globalStateTree} />, mainContainer);
+    ReactDOM.render(<MainComponent tree={globalStateTree} />, mainContainer);
   });
 
   return {};

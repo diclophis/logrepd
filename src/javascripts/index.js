@@ -47,7 +47,7 @@ var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
   var js = (webpackDotConfig.output.publicPath + '/' + webpackDotConfig.output.filename);
 
   callWithErrorAndValue(null, '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(HtmlComponent, {
-    tree: globalStateTree,
+    treeInbound: globalStateTree,
     packageModule: packageModule,
     js: js
   })));
