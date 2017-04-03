@@ -10,7 +10,6 @@ var globalCursor = globalStateTree.select('global');
 
 var logCountUpdater = function(valToSet) {
   globalCursor.set('logCount', valToSet);
-  globalCursor.set('endTime', Date.now());
   globalStateTree.commit();
 };
 
@@ -21,12 +20,27 @@ var keepUpdatingCount = function() {
   });
 };
 
+var keepUpdatingTimestamps = function() {
+  var newEndTime = Math.round(Date.now() / 1000.0) * 1000.0;
+  //var timeWidth = newEndTime - globalCursor.get('beginTime');
+  //console.log(newEndTime);
+
+  globalCursor.set('gTime', Date.now());
+  globalCursor.set('endTime', newEndTime);
+  globalCursor.set('beginTime', (newEndTime - 60000));
+
+  globalStateTree.commit();
+
+  setTimeout(keepUpdatingTimestamps, 33);
+};
+
 module.exports = function(mainContainer) {
   console.log("all browser js starts here");
 
   hydrate.get("global/logCount").then(function(initialVal) {
     logCountUpdater(initialVal);
-    keepUpdatingCount();
+    //keepUpdatingCount();
+    keepUpdatingTimestamps();
 
     ReactDOM.render(<MainComponent tree={globalStateTree} />, mainContainer);
   });
