@@ -21,17 +21,22 @@ var keepUpdatingCount = function() {
 };
 
 var keepUpdatingTimestamps = function() {
-  var newEndTime = Math.round(Date.now() / 1000.0) * 1000.0;
-  //var timeWidth = newEndTime - globalCursor.get('beginTime');
-  //console.log(newEndTime);
+  //TODO: clunk-mode
 
-  globalCursor.set('gTime', Date.now());
-  globalCursor.set('endTime', newEndTime);
-  globalCursor.set('beginTime', (newEndTime - 60000));
+  var newEndTime = Date.now(); //Math.round(Date.now() / 1000.0) * 1000.0;
+  //var timeWidth = newEndTime - globalCursor.get('beginTime');
+  var otherEnd = newEndTime; //globalCursor.get('endTime') + 100;
+  //console.log(otherEnd);
+
+  globalCursor.set('gTime', otherEnd);
+  globalCursor.set('endTime', otherEnd);
+  globalCursor.set('beginTime', (otherEnd - 4000));
 
   globalStateTree.commit();
 
-  setTimeout(keepUpdatingTimestamps, 33);
+  //setTimeout(keepUpdatingTimestamps, 33);
+
+  window.requestAnimationFrame(keepUpdatingTimestamps);
 };
 
 module.exports = function(mainContainer) {

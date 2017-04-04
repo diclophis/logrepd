@@ -57,10 +57,9 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
 
       fluentd.count().then(function(c) {
         globalCursor.set('logCount', c);
-        globalCursor.set('endTime', Date.now());
+        //globalCursor.set('endTime', Date.now());
       });
     }, 500);
-
   });
 };
 
