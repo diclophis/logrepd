@@ -15,23 +15,6 @@ var GlobalLogCounterComponent = React.createClass({
     gTime: ['global', 'gTime']
   },
 
-/*
-  componentWillReceiveProps: function(nextProps) {
-		var timeWidth = (this.state.endTime - this.state.beginTime); //this.state.logCount;
-    if (timeWidth > 5000) {
-      this.setState({beginTime: (endTime - 4000)});
-    }
-  },
-*/
-/*
-  getInitialState: function() {
-    var defaultState = {
-      beginTime: Date.now()
-    }
-    return defaultState;
-  },
-*/
-
   render: function() {
     var followingGlobalEndTime = true;
 
@@ -39,10 +22,7 @@ var GlobalLogCounterComponent = React.createClass({
     var beginTime = 0;
     var startedTime = 0;
 
-//console.log(this.state);
-//debugger;
-
-    if (followingGlobalEndTime) { // && this.state && this.state.endTime) {
+    if (followingGlobalEndTime) {
       endTime = this.state.endTime;
       beginTime = this.state.beginTime;
     } else {
@@ -61,16 +41,10 @@ var GlobalLogCounterComponent = React.createClass({
       border: "1px solid red"
 		};
 
-		var timeWidth = (endTime - beginTime); //this.state.logCount;
+		var timeWidth = (endTime - beginTime);
     var distanceFromStartedTime = ((this.state.gTime) - startedTime);
 
-//-0.99 -0.495
-//bundle.js:13180 -0.988 -0.494
-//bundle.js:13180 0.019 0.0095
-
     var fractionOfSecond = ((distanceFromStartedTime / 1000.0) % 1);
-
-    //console.log(fractionOfSecond);
 
     var timeGrid = 1000.0;
     var lineWidthMod = 2.0 / 10.0;
@@ -81,23 +55,16 @@ var GlobalLogCounterComponent = React.createClass({
 
     var endEnd = new Date(endTime);
 
-    var unitOfGrid = ((1.0) / timeWidth); // + endEnd.getMilliseconds();
+    var unitOfGrid = ((1.0) / timeWidth);
     //TODO: clunk-mode
-    var halfAUnitOfMod = (fractionOfSecond / 1.0) * (timeGrid / timeWidth); //((fractionOfSecond / (0.5)) * (unitOfGrid * 500.0));
-
-    // * (unitOfGrid * 5000.0); //(0.5/(timeWidth / timeGrid / textMod)) * 0.0;
-    //0 2000 2000 NaN NaN NaN 0.0005 NaN
-    //0 2000 1491288055076 undefined 2000 NaN NaN NaN 0.0005 NaN
-    //console.log(beginTime, endTime, startedTime, this.state.gTime, timeWidth, distanceFromStartedTime, fractionOfSecond, (fractionOfSecond/1.0), unitOfGrid, halfAUnitOfMod);
+    var halfAUnitOfMod = (fractionOfSecond / 1.0) * (timeGrid / timeWidth);
 
     var ii = 0;
 		for (var i=0.0; i<(timeWidth + (timeGrid * 2.0)); i+=timeGrid) {
-      //console.log(i, timeWidth);
-
       var xOff = (((i * unitOfGrid) - halfAUnitOfMod) * 100.0);
       var width = lineWidthMod;
 
-      var t = ""; //ii.toString();
+      var t = "";
       var shouldShowGridLine = false;
       var shouldShowGridText = false;
 
@@ -107,7 +74,7 @@ var GlobalLogCounterComponent = React.createClass({
 
       var isMod = (Math.floor(msOfTimestamp / 1000) % 5) === 0;
 
-      if (isMod) { //(((msOfTimestamp) % 6000) == 0) { // || (dateOfTimestamp.getSeconds() % 5) == 5) {
+      if (isMod) {
         t = dateOfTimestamp.toLocaleTimeString();
         shouldShowGridLine = true;
         shouldShowGridText = true;
@@ -121,7 +88,7 @@ var GlobalLogCounterComponent = React.createClass({
       var widthp = width + "%";
 
 			var fontWidth = 2;
-      var xOffFontp = (xOff) + "%"; // - ((0.5 * fontWidth) + (0.5 * width))) + "%";
+      var xOffFontp = (xOff) + "%";
 
 			var fontSizep = 1 + "em";
 

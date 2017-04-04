@@ -7,7 +7,6 @@ var bluebird = require('bluebird');
 var HtmlComponent = require('./html');
 
 
-/*
 function clone(objectToBeCloned) {
   // Basis.
   if (!(objectToBeCloned instanceof Object)) {
@@ -37,11 +36,12 @@ function clone(objectToBeCloned) {
   
   return objectClone;
 }
-*/
 
 var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
+
   var webpackDotConfig = webpackDotConfigAndTree.webpackDotConfig;
-  var globalStateTree = webpackDotConfigAndTree.globalStateTree;
+
+  var globalStateTree = (webpackDotConfigAndTree.globalStateTree);
 
   var packageModule = webpackDotConfig.output.library;
   var js = (webpackDotConfig.output.publicPath + '/' + webpackDotConfig.output.filename);

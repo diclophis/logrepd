@@ -14,8 +14,10 @@ module.exports = (function() {
       gTime: date
     }
   }, {
-    autoCommit: false,
+    immutable: true,
     asynchronous: true,
-    lazyMonkeys: false
+    autoCommit: true,
+    lazyMonkeys: false,
+    persistent: true
   });
 });

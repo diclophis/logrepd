@@ -17,6 +17,7 @@ var HtmlComponent = React.createClass({
     var bootstrapInvokation = '(' + this.props.packageModule + ', document.getElementById("' + mainContainerId + '"));';
     var bootstrapSource = (bootstrapFunction + bootstrapInvokation).replace('\n', '');
     <script type="text/javascript" dangerouslySetInnerHTML={{__html:bootstrapSource}}></script>
+
 */
 
     return(
