@@ -27,7 +27,6 @@ var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
   });
 };
 
-
 var createConnection = function(postgresUrl, tableName, globalStateTree) {
   var globalCursor = globalStateTree.select('global');
 
@@ -35,8 +34,8 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
   // NOTE: https://github.com/sequelize/sequelize/blob/master/docs/docs/models-definition.md
   var sequelizeConnection = new sequelize(postgresUrl, {
     logging: false,
-    maxConcurrentQueries: 1024,
-    pool: {maxConnections: 32, maxIdleTime: 30}
+    maxConcurrentQueries: 1,
+    pool: {maxConnections: 1, maxIdleTime: 30}
   });
 
   var fluentd = sequelizeConnection.define(tableName, {

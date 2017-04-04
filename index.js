@@ -28,6 +28,6 @@ app.use(webpackAssetCompilation.createService(webpackDotConfig));
 app.get('/hydrate/*', hydrate.createService(globalStateTree));
 app.get('', backend.createStaticIndexServer(webpackDotConfig, globalStateTree));
 
-var expressServer = app.listen(httpPort, function() {
+var expressServer = app.listen(httpPort, 32, function() {
   console.log('Listening for web on httpPort', httpPort);
 });

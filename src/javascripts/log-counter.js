@@ -97,13 +97,15 @@ var GlobalLogCounterComponent = React.createClass({
       var gridId = "grid-" + xOffp + modName + ii;
       var metricId = "metric-" + xOffp + modName + ii;
 
-      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000) + 28800 - 17800; //UTC???
+      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000) + 28800 - 16800; //UTC???
       var metricCount = this.state.logCounts[metricCountIndex];
       if (metricCount) {
+        var metricWidth = 0.66;
         var metricCountp = ((metricCount / 100) * 100) + "%";
+        var metricOff = (xOff - ((0.5 * metricWidth))) + "%";
         //console.log(Object.keys(this.state.logCounts), metricCountIndex, metricCount);
         var metricBox = (
-          <rect key={metricId} x={xOffp} y={0} width="1%" height={metricCountp} fill="red" />
+          <rect key={metricId} x={metricOff} y={0} width={metricWidth + "%"} height={metricCountp} fill="red" />
         );
         metrics.push(metricBox);
       }

@@ -18,7 +18,7 @@ var logCountsUpdater = function(valToSet) {
 var keepUpdatingCount = function() {
   hydrate.get("global/logCounts").then(function(valAtInterval) {
     logCountsUpdater(valAtInterval);
-    setTimeout(keepUpdatingCount, 2000);
+    setTimeout(keepUpdatingCount, 66);
   });
 };
 
@@ -27,7 +27,7 @@ var keepUpdatingTimestamps = function() {
 
   //TODO: non-clunk mode
   //window.requestAnimationFrame(keepUpdatingTimestamps);
-  setTimeout(keepUpdatingTimestamps, 66);
+  setTimeout(keepUpdatingTimestamps, 34);
 };
 
 (function() {
