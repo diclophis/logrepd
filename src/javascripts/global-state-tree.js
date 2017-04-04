@@ -7,7 +7,7 @@ module.exports = (function() {
 
   return new baobabClass({
     global: {
-      logCounts: 0,
+      logCounts: {},
       endTime: date, //Date.now(),
       beginTime: (date - 60000), //(Date.now() - 1000),
       startedTime: date,

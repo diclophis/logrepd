@@ -11,14 +11,14 @@ var updateTimers = require('./shared').updateTimers;
 
 
 var logCountsUpdater = function(valToSet) {
-  globalCursor.set('logCounts', valToSet);
+  globalCursor.merge('logCounts', valToSet);
   globalStateTree.commit();
 };
 
 var keepUpdatingCount = function() {
   hydrate.get("global/logCounts").then(function(valAtInterval) {
     logCountsUpdater(valAtInterval);
-    setTimeout(keepUpdatingCount, 1000);
+    setTimeout(keepUpdatingCount, 2000);
   });
 };
 
@@ -26,8 +26,8 @@ var keepUpdatingTimestamps = function() {
   updateTimers(globalCursor, globalStateTree);
 
   //TODO: non-clunk mode
-  window.requestAnimationFrame(keepUpdatingTimestamps);
-  //setTimeout(keepUpdatingTimestamps, 66);
+  //window.requestAnimationFrame(keepUpdatingTimestamps);
+  setTimeout(keepUpdatingTimestamps, 66);
 };
 
 (function() {
@@ -35,7 +35,7 @@ var keepUpdatingTimestamps = function() {
 
   if (true) {
     keepUpdatingTimestamps();
-    //keepUpdatingCount();
+    keepUpdatingCount();
 
     var mainContainer = document.getElementById('main-container');
     ReactDOM.render(<MainComponent tree={globalStateTree} />, mainContainer);

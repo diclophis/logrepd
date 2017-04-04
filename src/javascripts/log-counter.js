@@ -48,10 +48,11 @@ var GlobalLogCounterComponent = React.createClass({
 
     var timeGrid = 1000.0;
     var lineWidthMod = 2.0 / 10.0;
+    var textMod = 10.0;
 
 		var gridLines = [];
     var gridTimestamps = [];
-    var textMod = 10.0;
+    var metrics = [];
 
     var endEnd = new Date(endTime);
 
@@ -94,6 +95,18 @@ var GlobalLogCounterComponent = React.createClass({
 
       var fontId = "font-" + xOffFontp + modName + ii;
       var gridId = "grid-" + xOffp + modName + ii;
+      var metricId = "metric-" + xOffp + modName + ii;
+
+      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000) + 28800 - 17800; //UTC???
+      var metricCount = this.state.logCounts[metricCountIndex];
+      if (metricCount) {
+        var metricCountp = ((metricCount / 100) * 100) + "%";
+        //console.log(Object.keys(this.state.logCounts), metricCountIndex, metricCount);
+        var metricBox = (
+          <rect key={metricId} x={xOffp} y={0} width="1%" height={metricCountp} fill="red" />
+        );
+        metrics.push(metricBox);
+      }
 
 			var gridTimestamp = (
 				<text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
@@ -105,6 +118,7 @@ var GlobalLogCounterComponent = React.createClass({
 				<rect key={gridId} x={xOffp} y={0} width={widthp} height="100%" fill="blue" />
 			);
 
+
       if (shouldShowGridLine) {
         gridLines.push(gridLine);
       }
@@ -112,6 +126,7 @@ var GlobalLogCounterComponent = React.createClass({
       if (shouldShowGridText) {
         gridTimestamps.push(gridTimestamp);
       }
+
 
       ii += 1;
 		}
@@ -125,9 +140,9 @@ var GlobalLogCounterComponent = React.createClass({
 							<feComposite in="SourceGraphic" />
 						</filter>
 					</defs> 
-					<circle cx="50%" cy="50%" r={20} fill="red" />
 					{gridLines}
 					{gridTimestamps}
+          {metrics}
 				  <text x="90%" y="90%" textAnchor="middle" fill="black" filter="url(#solid)">
             {Object.keys(this.state.logCounts).length} {this.state.gTime}
           </text>
