@@ -12,7 +12,7 @@ module.exports = {
   },
 
   entry: [
-    './src/javascripts/bootstrap.js'
+    './src/javascripts/frontend.js'
   ],
 
   output: {

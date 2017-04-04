@@ -8,7 +8,7 @@ var GlobalLogCounterComponent = React.createClass({
   mixins: [treeMixins.branch],
 
   cursors: {
-    logCount: ['global', 'logCount'],
+    logCounts: ['global', 'logCounts'],
     endTime: ['global', 'endTime'],
     beginTime: ['global', 'beginTime'],
     startedTime: ['global', 'startedTime'],
@@ -35,7 +35,7 @@ var GlobalLogCounterComponent = React.createClass({
   render: function() {
     var followingGlobalEndTime = true;
 
-    var endTime = 2000;
+    var endTime = 60000;
     var beginTime = 0;
     var startedTime = 0;
 
@@ -44,7 +44,6 @@ var GlobalLogCounterComponent = React.createClass({
 
     if (followingGlobalEndTime) { // && this.state && this.state.endTime) {
       endTime = this.state.endTime;
-      ////beginTime = endTime - (60 * 1000);
       beginTime = this.state.beginTime;
     } else {
     }
@@ -57,7 +56,7 @@ var GlobalLogCounterComponent = React.createClass({
 			height: "100%",
 			left: 0,
       top: 0,
-      transform: "scale(0.5)",
+      transform: "scale(1.0)",
       overflow: "visible",
       border: "1px solid red"
 		};
@@ -87,10 +86,12 @@ var GlobalLogCounterComponent = React.createClass({
     var halfAUnitOfMod = (fractionOfSecond / 1.0) * (timeGrid / timeWidth); //((fractionOfSecond / (0.5)) * (unitOfGrid * 500.0));
 
     // * (unitOfGrid * 5000.0); //(0.5/(timeWidth / timeGrid / textMod)) * 0.0;
-    //console.log((fractionOfSecond/1.0), unitOfGrid, halfAUnitOfMod);
+    //0 2000 2000 NaN NaN NaN 0.0005 NaN
+    //0 2000 1491288055076 undefined 2000 NaN NaN NaN 0.0005 NaN
+    //console.log(beginTime, endTime, startedTime, this.state.gTime, timeWidth, distanceFromStartedTime, fractionOfSecond, (fractionOfSecond/1.0), unitOfGrid, halfAUnitOfMod);
 
     var ii = 0;
-		for (var i=0.0; i<timeWidth; i+=timeGrid) {
+		for (var i=0.0; i<(timeWidth + (timeGrid * 2.0)); i+=timeGrid) {
       //console.log(i, timeWidth);
 
       var xOff = (((i * unitOfGrid) - halfAUnitOfMod) * 100.0);
@@ -104,29 +105,9 @@ var GlobalLogCounterComponent = React.createClass({
       var dateOfTimestamp = new Date(msOfTimestamp);
       var modName = "-slim";
 
-//-0.2109999656677246 -0.1054999828338623 0 0 0
-//-0.2109999656677246 -0.1054999828338623 0 1000 1000
-//-0.11100006103515625 -0.055500030517578125 0 0 0
-//-0.11100006103515625 -0.055500030517578125 0 1000 1000
-//-0.010999917984008789 -0.0054999589920043945 0 0 0
-//-0.010999917984008789 -0.0054999589920043945 0 1000 1000
-//-0.9110000133514404 -0.4555000066757202 0 0 0
-//-0.9110000133514404 -0.4555000066757202 0 1000 1000
-
-      //console.log(fractionOfSecond, halfAUnitOfMod, beginTime, i, msOfTimestamp);
-
-      //console.log(msOfTimestamp);
-      //1491275423586
-      //1491275424586
-      //1491275425586
-      //1491275426586
-      //1491275427586
-      //1491275428586
-      //1491275429586
-      //1491275430586
       var isMod = (Math.floor(msOfTimestamp / 1000) % 5) === 0;
 
-      if (true || isMod) { //(((msOfTimestamp) % 6000) == 0) { // || (dateOfTimestamp.getSeconds() % 5) == 5) {
+      if (isMod) { //(((msOfTimestamp) % 6000) == 0) { // || (dateOfTimestamp.getSeconds() % 5) == 5) {
         t = dateOfTimestamp.toLocaleTimeString();
         shouldShowGridLine = true;
         shouldShowGridText = true;
@@ -170,9 +151,6 @@ var GlobalLogCounterComponent = React.createClass({
 
     return (
       <div>
-        <h1>
-					{this.state.logCount}
-				</h1>
 				<svg style={graphStyle}>
 					<defs>
 						<filter x="0" y="0" width="1" height="1" id="solid">
@@ -183,8 +161,8 @@ var GlobalLogCounterComponent = React.createClass({
 					<circle cx="50%" cy="50%" r={20} fill="red" />
 					{gridLines}
 					{gridTimestamps}
-				  <text x="10%" y="10%" textAnchor="middle" fill="black" filter="url(#solid)">
-            {this.state.gTime}
+				  <text x="90%" y="90%" textAnchor="middle" fill="black" filter="url(#solid)">
+            {Object.keys(this.state.logCounts).length} {this.state.gTime}
           </text>
 				</svg>
       </div>

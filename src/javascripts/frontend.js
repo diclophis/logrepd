@@ -8,47 +8,49 @@ var globalStateTree = require('./global-state-tree')(); // 1/2 locations, for cl
 var globalCursor = globalStateTree.select('global');
 
 
-var logCountUpdater = function(valToSet) {
-  globalCursor.set('logCount', valToSet);
+var logCountsUpdater = function(valToSet) {
+  globalCursor.set('logCounts', valToSet);
   globalStateTree.commit();
 };
 
 var keepUpdatingCount = function() {
-  hydrate.get("global/logCount").then(function(valAtInterval) {
-    logCountUpdater(valAtInterval);
+  hydrate.get("global/logCounts").then(function(valAtInterval) {
+    logCountsUpdater(valAtInterval);
     setTimeout(keepUpdatingCount, 1000);
   });
 };
 
 var keepUpdatingTimestamps = function() {
-  //TODO: clunk-mode
-
-  var newEndTime = Date.now(); //Math.round(Date.now() / 1000.0) * 1000.0;
+  var newEndTime = Date.now();
   //var timeWidth = newEndTime - globalCursor.get('beginTime');
-  var otherEnd = newEndTime; //globalCursor.get('endTime') + 100;
-  //console.log(otherEnd);
+  //TODO: debug-time-mode
+  //globalCursor.get('endTime') + 100;
+  var otherEnd = newEndTime;
 
   globalCursor.set('gTime', otherEnd);
   globalCursor.set('endTime', otherEnd);
-  globalCursor.set('beginTime', (otherEnd - 4000));
 
+  //TODO: option for graph duration
+  globalCursor.set('beginTime', (otherEnd - (60 * 1000)));
   globalStateTree.commit();
 
-  //setTimeout(keepUpdatingTimestamps, 33);
+  setTimeout(keepUpdatingTimestamps, 66);
 
-  window.requestAnimationFrame(keepUpdatingTimestamps);
+  //TODO: clunk-mode
+  //window.requestAnimationFrame(keepUpdatingTimestamps);
 };
 
-module.exports = function(mainContainer) {
+(function() {
   console.log("all browser js starts here");
 
-  hydrate.get("global/logCount").then(function(initialVal) {
-    logCountUpdater(initialVal);
-    //keepUpdatingCount();
+  if (true) {
     keepUpdatingTimestamps();
+    keepUpdatingCount();
 
+    var mainContainer = document.getElementById('main-container');
     ReactDOM.render(<MainComponent tree={globalStateTree} />, mainContainer);
-  });
+  }
+})();
 
-  return {};
-};
+
+module.exports = {};
