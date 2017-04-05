@@ -7,7 +7,14 @@ var webpackMiddleware = require("webpack-dev-middleware");
 module.exports = {}
 
 module.exports.createService = function(webpackDotConfig) {
-  return webpackMiddleware(webpack(webpackDotConfig), {
+
+  var withPlugins = Object.assign({
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin()
+    ]
+  }, webpackDotConfig);
+
+  return webpackMiddleware(webpack(withPlugins), {
     // display no info to console (only warnings and errors) 
     noInfo: false,
     // display nothing to the console 
