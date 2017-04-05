@@ -14,7 +14,7 @@ var webpackAssetCompilation = require('./src/javascripts/webpack-asset-compilati
 var databaseName = process.env["PG_DATABASE"] || 'fluentd';
 var tableName = process.env["FLUENTD_TABLE"] || 'fluentd';
 var httpPort = process.env.PORT || 3001;
-var postgresUrl = 'postgres://' + process.env["PG_USERNAME"] + '@' + process.env["PG_HOST"] + '/' + databaseName;
+var postgresUrl = process.env.LOGREPD_POSTGRES_URL || ('postgres://' + process.env["PG_USERNAME"] + ':' + (process.env["PG_PASSWORD"]) + '@' + process.env["PG_HOST"] + '/' + databaseName);
 
 // backend data fetching is in this module
 var backendStarted = backend.createConnection(postgresUrl, tableName, globalStateTree);

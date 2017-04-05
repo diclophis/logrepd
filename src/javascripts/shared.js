@@ -16,7 +16,7 @@ module.exports.updateTimers = function(globalCursor, globalStateTree) {
   globalCursor.set('endTime', otherEnd);
 
   //TODO: option for graph duration
-  globalCursor.set('beginTime', (otherEnd - (60 * 1000)));
+  globalCursor.set('beginTime', (otherEnd - (5 * 60 * 1000)));
 
   //TODO: support force commit??
   globalStateTree.commit();

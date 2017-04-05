@@ -30,27 +30,28 @@ var GlobalLogCounterComponent = React.createClass({
 
     startedTime = this.state.startedTime;
 
-		var graphStyle = {
-			position: "absolute",
-			width: "100%",
-			height: "100%",
-			left: 0,
+    var graphStyle = {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      left: 0,
       top: 0,
-      transform: "scale(1.0)",
+      transform: "scale(0.9)",
       overflow: "visible",
-      border: "1px solid red"
-		};
+      //border: "1px solid red"
+      background: "black"
+    };
 
-		var timeWidth = (endTime - beginTime);
+    var timeWidth = (endTime - beginTime);
     var distanceFromStartedTime = ((this.state.gTime) - startedTime);
 
     var fractionOfSecond = ((distanceFromStartedTime / 1000.0) % 1);
 
     var timeGrid = 1000.0;
-    var lineWidthMod = 2.0 / 10.0;
+    var lineWidthMod = 1.0 / 3.334;
     var textMod = 10.0;
 
-		var gridLines = [];
+    var gridLines = [];
     var gridTimestamps = [];
     var metrics = [];
 
@@ -61,7 +62,8 @@ var GlobalLogCounterComponent = React.createClass({
     var halfAUnitOfMod = (fractionOfSecond / 1.0) * (timeGrid / timeWidth);
 
     var ii = 0;
-		for (var i=0.0; i<(timeWidth + (timeGrid * 2.0)); i+=timeGrid) {
+    var maxTime = (timeWidth + (timeGrid * 2.0));
+    for (var i=0.0; i<maxTime; i+=timeGrid) {
       var xOff = (((i * unitOfGrid) - halfAUnitOfMod) * 100.0);
       var width = lineWidthMod;
 
@@ -73,82 +75,92 @@ var GlobalLogCounterComponent = React.createClass({
       var dateOfTimestamp = new Date(msOfTimestamp);
       var modName = "-slim";
 
-      var isMod = (Math.floor(msOfTimestamp / 1000) % 5) === 0;
+      var modDelta = (1 * 60);
+      var subDelta = modDelta / 3;
+
+      var isMod = (Math.floor(msOfTimestamp / 1000) % (modDelta)) === 0;
+      var isModLight = (Math.floor(msOfTimestamp / 1000) % (subDelta)) === 0;
+
+      t = dateOfTimestamp.toLocaleTimeString();
 
       if (isMod) {
-        t = dateOfTimestamp.toLocaleTimeString();
         shouldShowGridLine = true;
         shouldShowGridText = true;
         modName = "-fat";
       } else {
-        shouldShowGridLine = true;
+        if (isModLight) {
+          shouldShowGridLine = true;
+          //shouldShowGridText = true;
+        }
+
         width = 0.333 * lineWidthMod;
       }
 
       var xOffp = (xOff - (0.5 * width)) + "%";
       var widthp = width + "%";
 
-			var fontWidth = 2;
+      var fontWidth = 2;
       var xOffFontp = (xOff) + "%";
 
-			var fontSizep = 1 + "em";
+      var fontSizep = 1 + "em";
 
-      var fontId = "font-" + xOffFontp + modName + ii;
-      var gridId = "grid-" + xOffp + modName + ii;
-      var metricId = "metric-" + xOffp + modName + ii;
+      var fontId = "font-" + ii;
+      var gridId = "grid-" + ii;
+      var metricId = "metric-" + ii;
 
-      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000) + 28800 - 16800; //UTC???
+      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000); // - 16800; //UTC???
       var metricCount = this.state.logCounts[metricCountIndex];
+
+      //if (((ii+5) * timeGrid) > maxTime) {
+      //  console.log(dateOfTimestamp, Object.keys(this.state.logCounts), metricCountIndex, metricCount);
+      //}
+
       if (metricCount) {
-        var metricWidth = 0.66;
-        var metricCountp = ((metricCount / 100) * 100) + "%";
+        var metricWidth = 0.1;
+        var metricCounth = ((metricCount / 500) * 100)
+        var metricCountp = (metricCounth) + "%";
         var metricOff = (xOff - ((0.5 * metricWidth))) + "%";
-        //console.log(Object.keys(this.state.logCounts), metricCountIndex, metricCount);
         var metricBox = (
-          <rect key={metricId} x={metricOff} y={0} width={metricWidth + "%"} height={metricCountp} fill="red" />
+          <rect key={metricId} x={metricOff} y={(0.5 * -metricCounth + 50) + "%"} width={metricWidth + "%"} height={metricCountp} fill="magenta" />
         );
         metrics.push(metricBox);
       }
 
-			var gridTimestamp = (
-				<text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
-					{t}
-				</text>
-			);
-
-			var gridLine = (
-				<rect key={gridId} x={xOffp} y={0} width={widthp} height="100%" fill="blue" />
-			);
-
-
       if (shouldShowGridLine) {
+        var gridLine = (
+          <rect key={gridId} x={xOffp} y={0} width={widthp} height="100%" fill="cyan" />
+        );
         gridLines.push(gridLine);
       }
 
       if (shouldShowGridText) {
+        var gridTimestamp = (
+          <text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
+            {t}
+          </text>
+        );
         gridTimestamps.push(gridTimestamp);
       }
 
-
       ii += 1;
-		}
+    }
 
     return (
       <div>
-				<svg style={graphStyle}>
-					<defs>
-						<filter x="0" y="0" width="1" height="1" id="solid">
-							<feFlood floodColor="white" />
-							<feComposite in="SourceGraphic" />
-						</filter>
-					</defs> 
-					{gridLines}
-					{gridTimestamps}
+        <svg style={graphStyle}>
+          <defs>
+            <filter x="0" y="0" width="1" height="1" id="solid">
+              <feFlood floodColor="yellow" />
+              <feComposite in="SourceGraphic" />
+            </filter>
+          </defs> 
+          {gridLines}
           {metrics}
-				  <text x="90%" y="90%" textAnchor="middle" fill="black" filter="url(#solid)">
+          {gridTimestamps}
+          <text x="90%" y="90%" textAnchor="middle" fill="black" filter="url(#solid)">
             {Object.keys(this.state.logCounts).length} {this.state.gTime}
           </text>
-				</svg>
+        </svg>
       </div>
     );
   }

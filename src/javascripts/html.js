@@ -19,6 +19,9 @@ var HtmlComponent = React.createClass({
     <script type="text/javascript" dangerouslySetInnerHTML={{__html:bootstrapSource}}></script>
 
 */
+    var style = {
+      background: "black"
+    };
 
     return(
       <html>
@@ -28,7 +31,7 @@ var HtmlComponent = React.createClass({
           <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
           <script type="text/javascript" dangerouslySetInnerHTML={{__html:'__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};'}}></script>
         </head>
-        <body>
+        <body style={style}>
           <div id="main-container">
             <MainComponent tree={this.props.treeInbound}/>
           </div>
