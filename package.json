@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "bootstrap": "sh bootstrap.sh"
+    "bootstrap": [
+      "psql --host=$PG_HOST --username=$PG_USERNAME --list | grep fluentd || createdb --host=$PG_HOST --username=$PG_USERNAME fluentd && 'CREATE TABLE IF NOT EXISTS fluentd (tag Text, time Timestamptz, record Jsonb);' | psql --host=$PG_HOST --username=$PG_USERNAME"
+    ]
   },
   "license": "MIT",
   "private": true,
