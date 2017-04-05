@@ -7,7 +7,7 @@ var updateTimers = require('./shared').updateTimers;
 var fluentdG = null
 
 
-var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
+var createStaticIndexServer = function(globalStateTree) {
   var globalCursor = globalStateTree.select('global');
 
   // react server side rendering occurs here
@@ -16,7 +16,7 @@ var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
 
   return (function(req, res) {
     updateTimers(globalCursor, globalStateTree);
-    index.renderHtml({webpackDotConfig: webpackDotConfig, globalStateTree: globalStateTree}).then(function(indexHtml) {
+    index.renderHtml({globalStateTree: globalStateTree}).then(function(indexHtml) {
       res.send(indexHtml);
     });
   });

@@ -8,9 +8,10 @@ var HtmlComponent = require('./html');
 
 var libraryFunction = function(webpackDotConfigAndTree, callWithErrorAndValue) {
 
-  var webpackDotConfig = webpackDotConfigAndTree.webpackDotConfig;
+  //webpackDotConfigAndTree.webpackDotConfig;
 
   var globalStateTree = (webpackDotConfigAndTree.globalStateTree);
+  var webpackDotConfig = globalStateTree.get('webpackDotConfig');
 
   var packageModule = webpackDotConfig.output.library;
   var js = (webpackDotConfig.output.publicPath + '/' + webpackDotConfig.output.filename);

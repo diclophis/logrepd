@@ -32,7 +32,7 @@ var GlobalLogCounterComponent = React.createClass({
 
     var graphStyle = {
       position: "absolute",
-      width: "100%",
+      width: "1000%",
       height: "100%",
       left: 0,
       top: 0,
@@ -48,7 +48,7 @@ var GlobalLogCounterComponent = React.createClass({
     var fractionOfSecond = ((distanceFromStartedTime / 1000.0) % 1);
 
     var timeGrid = 1000.0;
-    var lineWidthMod = 1.0 / 3.334;
+    var lineWidthMod = 0.33;
     var textMod = 10.0;
 
     var gridLines = [];
@@ -97,7 +97,7 @@ var GlobalLogCounterComponent = React.createClass({
       }
 
       var xOffp = (xOff - (0.5 * width)) + "%";
-      var widthp = width + "%";
+      var widthp = width + "em";
 
       var fontWidth = 2;
       var xOffFontp = (xOff) + "%";
@@ -121,7 +121,7 @@ var GlobalLogCounterComponent = React.createClass({
         var metricCountp = (metricCounth) + "%";
         var metricOff = (xOff - ((0.5 * metricWidth))) + "%";
         var metricBox = (
-          <rect key={metricId} x={metricOff} y={(0.5 * -metricCounth + 50) + "%"} width={metricWidth + "%"} height={metricCountp} fill="magenta" />
+          <rect key={metricId} x={metricOff} y={(0.5 * -metricCounth + 50) + "%"} width={metricWidth + "em"} height={metricCountp} fill="magenta" />
         );
         metrics.push(metricBox);
       }

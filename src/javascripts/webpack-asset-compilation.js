@@ -10,6 +10,12 @@ module.exports.createService = function(webpackDotConfig) {
 
   var withPlugins = Object.assign({
     plugins: [
+			new webpack.DefinePlugin({
+				'process.env': {
+					NODE_ENV: JSON.stringify('production')
+				}
+			}),
+
       new webpack.optimize.UglifyJsPlugin()
     ]
   }, webpackDotConfig);

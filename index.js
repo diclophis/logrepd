@@ -3,8 +3,6 @@
 var process = require("process");
 var express = require('express');
 
-var webpackDotConfig = require('./webpack.config');
-
 var backend = require('./src/javascripts/backend');
 var hydrate = require('./src/javascripts/hydrate');
 var globalStateTree = require('./src/javascripts/global-state-tree')(); // 1/2 locations, for server-side
@@ -23,9 +21,13 @@ var backendStarted = backend.createConnection(postgresUrl, tableName, globalStat
 var app = express();
 // fetches the given cursor location from the global state tree
 // TODO: figure out express.use
+var webpackDotConfig = globalStateTree.get('webpackDotConfig');
+console.log(webpackDotConfig);
+debugger;
+
 app.use(webpackAssetCompilation.createService(webpackDotConfig));
 app.get('/hydrate/*', hydrate.createService(globalStateTree));
-app.get('', backend.createStaticIndexServer(webpackDotConfig, globalStateTree));
+app.get('', backend.createStaticIndexServer(globalStateTree));
 
 
 var expressServer = app.listen(httpPort, 32, function() {

@@ -1,6 +1,7 @@
 //
 
 var baobabClass = require('baobab');
+var webpackDotConfig = require('../../webpack.config');
 
 
 module.exports = (function() {
@@ -13,9 +14,10 @@ module.exports = (function() {
       beginTime: (date - 60000), //TODO: map this to shared timers
       startedTime: date,
       gTime: date
-    }
+    },
+    webpackDotConfig: webpackDotConfig
   }, {
-    immutable: true,
+    immutable: false, //TODO: fix webpackConfig
     asynchronous: true,
     autoCommit: true,
     lazyMonkeys: false,
