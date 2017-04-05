@@ -11,7 +11,7 @@ var updateTimers = require('./shared').updateTimers;
 
 var logCountsUpdater = function(valToSet) {
   globalCursor.merge('logCounts', valToSet);
-  globalStateTree.commit();
+  //globalStateTree.commit();
 };
 
 var keepUpdatingCount = function() {
@@ -24,9 +24,9 @@ var keepUpdatingCount = function() {
 var keepUpdatingTimestamps = function() {
   updateTimers(globalCursor, globalStateTree);
 
-  //TODO: non-clunk mode
-  //window.requestAnimationFrame(keepUpdatingTimestamps);
-  setTimeout(keepUpdatingTimestamps, 667);
+  //TODO: non/debug-clunk mode
+  window.requestAnimationFrame(keepUpdatingTimestamps);
+  //setTimeout(keepUpdatingTimestamps, 667);
 };
 
 (function() {

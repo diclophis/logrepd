@@ -3,24 +3,12 @@
 var React = require('react');
 var MainComponent = require('./main');
 
+
 var HtmlComponent = React.createClass({
-
   render: function() {
-    //var mainContainerId = this.props.packageModule.toLowerCase() + "-container";
-
-/*
-    var entryPoint = function(bootstrap, mainContainer) {
-      bootstrap(mainContainer);
-    };
-
-    var bootstrapFunction = '(' + entryPoint.toString() + ')';
-    var bootstrapInvokation = '(' + this.props.packageModule + ', document.getElementById("' + mainContainerId + '"));';
-    var bootstrapSource = (bootstrapFunction + bootstrapInvokation).replace('\n', '');
-    <script type="text/javascript" dangerouslySetInnerHTML={{__html:bootstrapSource}}></script>
-
-*/
     var style = {
-      background: "black"
+      background: "black",
+      fontFamily: "monospace"
     };
 
     return(

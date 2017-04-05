@@ -108,7 +108,7 @@ var GlobalLogCounterComponent = React.createClass({
       var gridId = "grid-" + ii;
       var metricId = "metric-" + ii;
 
-      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000); // - 16800; //UTC???
+      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000);
       var metricCount = this.state.logCounts[metricCountIndex];
 
       //if (((ii+5) * timeGrid) > maxTime) {
@@ -135,7 +135,7 @@ var GlobalLogCounterComponent = React.createClass({
 
       if (shouldShowGridText) {
         var gridTimestamp = (
-          <text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="black" filter="url(#solid)">
+          <text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="white" filter="url(#solid)">
             {t}
           </text>
         );
@@ -150,14 +150,14 @@ var GlobalLogCounterComponent = React.createClass({
         <svg style={graphStyle}>
           <defs>
             <filter x="0" y="0" width="1" height="1" id="solid">
-              <feFlood floodColor="yellow" />
+              <feFlood floodColor="black" />
               <feComposite in="SourceGraphic" />
             </filter>
           </defs> 
           {gridLines}
           {metrics}
           {gridTimestamps}
-          <text x="90%" y="90%" textAnchor="middle" fill="black" filter="url(#solid)">
+          <text x="90%" y="90%" textAnchor="middle" fill="white" filter="url(#solid)">
             {Object.keys(this.state.logCounts).length} {this.state.gTime}
           </text>
         </svg>

@@ -15,15 +15,10 @@ var createStaticIndexServer = function(webpackDotConfig, globalStateTree) {
   var index = require('./index');
 
   return (function(req, res) {
-    //var fakeRecord = {foo: 'bar'};
-    //fluentdG.create({tag: "", record: fakeRecord, time: Date.now()}).then(function(fakeLog) {
-      //console.log(fakeRecord, fakeLog.get('record'));
-
-      updateTimers(globalCursor, globalStateTree);
-      index.renderHtml({webpackDotConfig: webpackDotConfig, globalStateTree: globalStateTree}).then(function(indexHtml) {
-        res.send(indexHtml);
-      });
-    //});
+    updateTimers(globalCursor, globalStateTree);
+    index.renderHtml({webpackDotConfig: webpackDotConfig, globalStateTree: globalStateTree}).then(function(indexHtml) {
+      res.send(indexHtml);
+    });
   });
 };
 
@@ -64,19 +59,11 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
     fluentd.removeAttribute('id');
 
     timers.setInterval(function() {
-      //globalCursor.set('endTime', Date.now());
-      //updateTimers(globalCursor, globalStateTree);
-      //fluentd.findAll().then(function(rows) {
-      //  console.log(rows);
-      //});
-      //
-      //console.log("foop");
-
       var countSecond = "SELECT DISTINCT";
       countSecond += "   date_trunc('second', \"time\") AS second, ";
       countSecond += "   count(*) AS count";
       countSecond += "   FROM fluentd";
-      countSecond += "   WHERE time > NOW() - INTERVAL '60 minute'";
+      countSecond += "   WHERE time > NOW() - INTERVAL '2 minute'";
       countSecond += "   GROUP BY second;";
 
 			sequelizeConnection.query(countSecond).spread(function(results, metadata) {
@@ -97,10 +84,6 @@ var createConnection = function(postgresUrl, tableName, globalStateTree) {
       //      ,count(*) OVER (ORDER BY date_trunc('second', "time")) AS running_ct
       //FROM   fluentd
       //ORDER  BY 1;
-
-      //fluentd.count().then(function(c) {
-      //  globalCursor.set('logCounts', {total: c});
-      //});
     }, 333);
   });
 };
