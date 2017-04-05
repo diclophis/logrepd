@@ -1,4 +1,4 @@
-[![image](logrepd.png)](https://github.com/diclophis/logrepd)
+[![image](logrepd-1.0.png)](https://github.com/diclophis/logrepd)
 
 # bootstrap
 
