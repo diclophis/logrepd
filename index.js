@@ -22,8 +22,6 @@ var app = express();
 // fetches the given cursor location from the global state tree
 // TODO: figure out express.use
 var webpackDotConfig = globalStateTree.get('webpackDotConfig');
-console.log(webpackDotConfig);
-debugger;
 
 app.use(webpackAssetCompilation.createService(webpackDotConfig));
 app.get('/hydrate/*', hydrate.createService(globalStateTree));
