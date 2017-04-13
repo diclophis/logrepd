@@ -32,7 +32,7 @@ var GlobalLogCounterComponent = React.createClass({
 
     var graphStyle = {
       position: "absolute",
-      width: "1000%",
+      width: "100%",
       height: "100%",
       left: 0,
       top: 0,
@@ -75,8 +75,8 @@ var GlobalLogCounterComponent = React.createClass({
       var dateOfTimestamp = new Date(msOfTimestamp);
       var modName = "-slim";
 
-      var modDelta = (1 * 60);
-      var subDelta = modDelta / 3;
+      var modDelta = (1 * 60 * 5);
+      var subDelta = modDelta / 5;
 
       var isMod = (Math.floor(msOfTimestamp / 1000) % (modDelta)) === 0;
       var isModLight = (Math.floor(msOfTimestamp / 1000) % (subDelta)) === 0;
