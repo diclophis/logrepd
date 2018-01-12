@@ -1,16 +1,15 @@
 //
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var MainComponent = require('./main');
-var hydrate = require('./hydrate');
-var globalStateTree = require('./global-state-tree')(); // 1/2 locations, for client-side
-var globalCursor = globalStateTree.select('global');
-var updateTimers = require('./shared').updateTimers;
-
+var React = require("react");
+var ReactDOM = require("react-dom");
+var MainComponent = require("./main");
+var hydrate = require("./hydrate");
+var globalStateTree = require("./global-state-tree")(); // 1/2 locations, for client-side
+var globalCursor = globalStateTree.select("global");
+var updateTimers = require("./shared").updateTimers;
 
 var logCountsUpdater = function(valToSet) {
-  globalCursor.merge('logCounts', valToSet);
+  globalCursor.merge("logCounts", valToSet);
   //globalStateTree.commit();
 };
 
@@ -36,10 +35,9 @@ var keepUpdatingTimestamps = function() {
     keepUpdatingTimestamps();
     keepUpdatingCount();
 
-    var mainContainer = document.getElementById('main-container');
+    var mainContainer = document.getElementById("main-container");
     ReactDOM.render(<MainComponent tree={globalStateTree} />, mainContainer);
   }
 })();
-
 
 module.exports = {};

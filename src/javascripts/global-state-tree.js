@@ -1,26 +1,28 @@
 //
 
-var baobabClass = require('baobab');
-var webpackDotConfig = require('../../webpack.config');
+var baobabClass = require("baobab");
+var webpackDotConfig = require("../../webpack.config");
 
-
-module.exports = (function() {
+module.exports = function() {
   var date = Date.now();
 
-  return new baobabClass({
-    global: {
-      logCounts: {},
-      endTime: date,
-      beginTime: (date - 60000), //TODO: map this to shared timers
-      startedTime: date,
-      gTime: date
+  return new baobabClass(
+    {
+      global: {
+        logCounts: {},
+        endTime: date,
+        beginTime: date - 60000, //TODO: map this to shared timers
+        startedTime: date,
+        gTime: date
+      },
+      webpackDotConfig: webpackDotConfig
     },
-    webpackDotConfig: webpackDotConfig
-  }, {
-    immutable: false, //TODO: fix webpackConfig
-    asynchronous: true,
-    autoCommit: true,
-    lazyMonkeys: false,
-    persistent: true
-  });
-});
+    {
+      immutable: false, //TODO: fix webpackConfig
+      asynchronous: true,
+      autoCommit: true,
+      lazyMonkeys: false,
+      persistent: true
+    }
+  );
+};

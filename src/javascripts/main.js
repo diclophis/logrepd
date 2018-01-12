@@ -1,9 +1,8 @@
 // primary entry point
 
-var React = require('react');
-var treeMixins = require('baobab-react/mixins');
-var LogCounter = require('./log-counter');
-
+var React = require("react");
+var treeMixins = require("baobab-react/mixins");
+var LogCounter = require("./log-counter");
 
 var MainComponent = React.createClass({
   mixins: [treeMixins.root],
@@ -16,6 +15,5 @@ var MainComponent = React.createClass({
     );
   }
 });
-
 
 module.exports = MainComponent;

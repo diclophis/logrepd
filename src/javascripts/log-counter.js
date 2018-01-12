@@ -1,18 +1,17 @@
 //
 
-var React = require('react');
-var treeMixins = require('baobab-react/mixins');
-
+var React = require("react");
+var treeMixins = require("baobab-react/mixins");
 
 var GlobalLogCounterComponent = React.createClass({
   mixins: [treeMixins.branch],
 
   cursors: {
-    logCounts: ['global', 'logCounts'],
-    endTime: ['global', 'endTime'],
-    beginTime: ['global', 'beginTime'],
-    startedTime: ['global', 'startedTime'],
-    gTime: ['global', 'gTime']
+    logCounts: ["global", "logCounts"],
+    endTime: ["global", "endTime"],
+    beginTime: ["global", "beginTime"],
+    startedTime: ["global", "startedTime"],
+    gTime: ["global", "gTime"]
   },
 
   render: function() {
@@ -42,10 +41,10 @@ var GlobalLogCounterComponent = React.createClass({
       background: "black"
     };
 
-    var timeWidth = (endTime - beginTime);
-    var distanceFromStartedTime = ((this.state.gTime) - startedTime);
+    var timeWidth = endTime - beginTime;
+    var distanceFromStartedTime = this.state.gTime - startedTime;
 
-    var fractionOfSecond = ((distanceFromStartedTime / 1000.0) % 1);
+    var fractionOfSecond = distanceFromStartedTime / 1000.0 % 1;
 
     var timeGrid = 1000.0;
     var lineWidthMod = 0.33;
@@ -57,29 +56,29 @@ var GlobalLogCounterComponent = React.createClass({
 
     var endEnd = new Date(endTime);
 
-    var unitOfGrid = ((1.0) / timeWidth);
+    var unitOfGrid = 1.0 / timeWidth;
     //TODO: clunk-mode
-    var halfAUnitOfMod = (fractionOfSecond / 1.0) * (timeGrid / timeWidth);
+    var halfAUnitOfMod = fractionOfSecond / 1.0 * (timeGrid / timeWidth);
 
     var ii = 0;
-    var maxTime = (timeWidth + (timeGrid * 2.0));
-    for (var i=0.0; i<maxTime; i+=timeGrid) {
-      var xOff = (((i * unitOfGrid) - halfAUnitOfMod) * 100.0);
+    var maxTime = timeWidth + timeGrid * 2.0;
+    for (var i = 0.0; i < maxTime; i += timeGrid) {
+      var xOff = (i * unitOfGrid - halfAUnitOfMod) * 100.0;
       var width = lineWidthMod;
 
       var t = "";
       var shouldShowGridLine = false;
       var shouldShowGridText = false;
 
-      var msOfTimestamp = Math.floor(beginTime + i - (fractionOfSecond * 1000.0));
+      var msOfTimestamp = Math.floor(beginTime + i - fractionOfSecond * 1000.0);
       var dateOfTimestamp = new Date(msOfTimestamp);
       var modName = "-slim";
 
-      var modDelta = (1 * 60 * 5);
+      var modDelta = 1 * 60 * 5;
       var subDelta = modDelta / 5;
 
-      var isMod = (Math.floor(msOfTimestamp / 1000) % (modDelta)) === 0;
-      var isModLight = (Math.floor(msOfTimestamp / 1000) % (subDelta)) === 0;
+      var isMod = Math.floor(msOfTimestamp / 1000) % modDelta === 0;
+      var isModLight = Math.floor(msOfTimestamp / 1000) % subDelta === 0;
 
       t = dateOfTimestamp.toLocaleTimeString();
 
@@ -96,11 +95,11 @@ var GlobalLogCounterComponent = React.createClass({
         width = 0.333 * lineWidthMod;
       }
 
-      var xOffp = (xOff - (0.5 * width)) + "%";
+      var xOffp = xOff - 0.5 * width + "%";
       var widthp = width + "em";
 
       var fontWidth = 2;
-      var xOffFontp = (xOff) + "%";
+      var xOffFontp = xOff + "%";
 
       var fontSizep = 1 + "em";
 
@@ -108,7 +107,7 @@ var GlobalLogCounterComponent = React.createClass({
       var gridId = "grid-" + ii;
       var metricId = "metric-" + ii;
 
-      var metricCountIndex = (Math.floor(msOfTimestamp / 1000) * 1000);
+      var metricCountIndex = Math.floor(msOfTimestamp / 1000) * 1000;
       var metricCount = this.state.logCounts[metricCountIndex];
 
       //if (((ii+5) * timeGrid) > maxTime) {
@@ -117,25 +116,47 @@ var GlobalLogCounterComponent = React.createClass({
 
       if (metricCount) {
         var metricWidth = 0.1;
-        var metricCounth = ((metricCount / 500) * 100)
-        var metricCountp = (metricCounth) + "%";
-        var metricOff = (xOff - ((0.5 * metricWidth))) + "%";
+        var metricCounth = metricCount / 500 * 100;
+        var metricCountp = metricCounth + "%";
+        var metricOff = xOff - 0.5 * metricWidth + "%";
         var metricBox = (
-          <rect key={metricId} x={metricOff} y={(0.5 * -metricCounth + 50) + "%"} width={metricWidth + "em"} height={metricCountp} fill="magenta" />
+          <rect
+            key={metricId}
+            x={metricOff}
+            y={0.5 * -metricCounth + 50 + "%"}
+            width={metricWidth + "em"}
+            height={metricCountp}
+            fill="magenta"
+          />
         );
         metrics.push(metricBox);
       }
 
       if (shouldShowGridLine) {
         var gridLine = (
-          <rect key={gridId} x={xOffp} y={0} width={widthp} height="100%" fill="cyan" />
+          <rect
+            key={gridId}
+            x={xOffp}
+            y={0}
+            width={widthp}
+            height="100%"
+            fill="cyan"
+          />
         );
         gridLines.push(gridLine);
       }
 
       if (shouldShowGridText) {
         var gridTimestamp = (
-          <text key={fontId} x={xOffFontp} y="5%" textAnchor="middle" fontSize={fontSizep} fill="white" filter="url(#solid)">
+          <text
+            key={fontId}
+            x={xOffFontp}
+            y="5%"
+            textAnchor="middle"
+            fontSize={fontSizep}
+            fill="white"
+            filter="url(#solid)"
+          >
             {t}
           </text>
         );
@@ -153,11 +174,17 @@ var GlobalLogCounterComponent = React.createClass({
               <feFlood floodColor="black" />
               <feComposite in="SourceGraphic" />
             </filter>
-          </defs> 
+          </defs>
           {gridLines}
           {metrics}
           {gridTimestamps}
-          <text x="90%" y="90%" textAnchor="middle" fill="white" filter="url(#solid)">
+          <text
+            x="90%"
+            y="90%"
+            textAnchor="middle"
+            fill="white"
+            filter="url(#solid)"
+          >
             {Object.keys(this.state.logCounts).length} {this.state.gTime}
           </text>
         </svg>
@@ -165,6 +192,5 @@ var GlobalLogCounterComponent = React.createClass({
     );
   }
 });
-
 
 module.exports = GlobalLogCounterComponent;
